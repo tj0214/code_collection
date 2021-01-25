@@ -14,7 +14,7 @@ public class HELLO{
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-class Solution {
+class A {
     public void a() {
         SimpleDateFormat format1 = new SimpleDateFormat ( "yyyyMMddHHmmssSSS");
         SimpleDateFormat format2 = new SimpleDateFormat("MMM dd, yyyy K:mm:ss a");
