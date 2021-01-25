@@ -1,21 +1,18 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HELLO{
   public static void main(String[] args) {
     System.out.println(hi("hey"));
   }
+  
   public String hi(String a){
     String b = "yo";
     b = b + a;
     return b;
   }
-}
-
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-class A {
-    public void a() {
+  
+  public void a() {
         SimpleDateFormat format1 = new SimpleDateFormat ( "yyyyMMddHHmmssSSS");
         SimpleDateFormat format2 = new SimpleDateFormat("MMM dd, yyyy K:mm:ss a");
         
@@ -23,3 +20,4 @@ class A {
         System.out.println(format2.format(System.currentTimeMillis()));
     }
 }
+
