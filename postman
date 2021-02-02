@@ -1,0 +1,142 @@
+//url
+http://127.0.0.1:8080/test/getTestData.do
+----------------------------------------------------------------------------------------------------------------
+
+//postman raw request parameter
+{
+    "ROOT": {
+        "HEADER": {
+            "REQ_USER": "testUser",
+            "ID": "testId",
+            "RST_MSG": ""
+        },
+        "BODY": {
+            "REQ_ID": "getTestData",
+            "REQ_PARAM": {
+                "TEST_DATA": "yeah"
+            }
+        }
+    }
+}
+----------------------------------------------------------------------------------------------------------------
+
+//java controller API
+
+package com.test;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import com.test.framework.system.HccMap;    //HccMap = 커스텀 MAP
+import com.test.framework.system.RestCallUtil;
+import com.test.framework.util.FileUtil;
+import com.test.service.TestService;
+
+@RestController
+@RequestMapping("/test") 
+public class TestController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+  
+  @Autowired
+	private TestService testService;
+
+  @SuppressWarnings("unchecked")
+  @RequestMapping(value="/getTestData", produces = { "application/json" }, method=RequestMethod.POST )
+  public @ResponseBody JSONObject getTestData(@RequestBody  String revcJsonString) throws Exception {
+
+    if(LOGGER.isDebugEnabled()){
+      LOGGER.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Controller START");
+    }
+
+    // 요청메시지 
+    JSONParser bodyJsonParser = new JSONParser();
+    JSONObject jsonRequest = (JSONObject) bodyJsonParser.parse(revcJsonString);
+    JSONObject jsonRoot = (JSONObject) jsonRequest.get("ROOT");
+    JSONObject jsonHeader = (JSONObject) jsonRoot.get("HEADER");
+    if(LOGGER.isDebugEnabled()){
+      LOGGER.debug("HEADER: \n" +jsonHeader.toJSONString());
+    }
+
+
+    JSONObject jsonBody = (JSONObject) jsonRoot.get("BODY");
+    String reqId = jsonBody.get("REQ_ID").toString();
+
+    if(LOGGER.isDebugEnabled()){
+      LOGGER.debug("DATA_MASTER: \n" +reqId);
+    }
+
+
+    JSONObject jsonResult = new JSONObject();
+
+    if("getTestData".equals(reqId)) {			
+      JSONObject jsonReqParam = (JSONObject) jsonBody.get("REQ_PARAM");
+
+
+      String testData = "";
+
+            if(jsonReqParam.get("TEST_DATA") != null) {
+              testData = jsonReqParam.get("TEST_DATA").toString();
+            }
+
+
+      HccMap dsSearchMainMap = new HccMap();
+
+            dsSearchMainMap.put("testData",testData);
+
+
+      if (LOGGER.isDebugEnabled()) {
+        LOGGER.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> dsSearchMainMap : {}", dsSearchMainMap);
+      }
+
+      List<HccMap> dsExampleList = testService.getExampleList(dsSearchMainMap);
+
+      JSONArray jsonArr = new JSONArray();
+      JSONObject jsonArrDetail = new JSONObject();
+
+      for (HccMap hccMap : dsExampleList) {
+        jsonArrDetail = RestCallUtil.mapToJson(hccMap);
+        jsonArr.add(jsonArrDetail);
+      }
+
+      jsonResult.put("LIST", jsonArr);
+      
+    }
+
+    // 응답메시지 
+    JSONObject rtnJsonMessage = new JSONObject();
+    JSONObject rtnJsonRoot = new JSONObject();
+    JSONObject rtnJsonHeader = new JSONObject();
+    JSONObject rtnJsonBody = new JSONObject();
+    rtnJsonHeader.put("REQ_USER", jsonHeader.get("REQ_USER"));
+    rtnJsonHeader.put("ID", jsonHeader.get("ID"));
+    rtnJsonHeader.put("RST_MSG", "Success");
+    rtnJsonHeader.put("REQ_DT", jsonHeader.get("REQ_DT"));
+    rtnJsonBody.put("DATA", jsonResult);   //result
+    rtnJsonRoot.put("BODY", rtnJsonBody);
+    rtnJsonRoot.put("HEADER", rtnJsonHeader);
+    rtnJsonMessage.put("ROOT", rtnJsonRoot);
+
+    if(LOGGER.isDebugEnabled()){
+      LOGGER.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Controller END");
+    }
+    return rtnJsonMessage;
+  }
+
+}
