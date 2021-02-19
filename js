@@ -30,3 +30,18 @@ function e(x) {
 function e(x) {
   return x.map(a=>a*1)
 }
+
+출처: https://dev-t-blog.tistory.com/8 [dev-t-blog]--------
+
+//Spring + JSP - Spring의 ModelAndView 에서 전달해준 Attribute 키 값
+var text = '${helloText}';
+var test = "${helloText}";
+
+//JSP 변수 선언 후 사용
+<% String helloText="Hello~!"; %>
+var text ="<%=helloText%>";
+
+//JSP 실행 순서
+Java => JSTL => HTML => javascript
+
+--------
