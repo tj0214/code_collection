@@ -45,3 +45,9 @@ var text ="<%=helloText%>";
 Java => JSTL => HTML => javascript
 
 --------
+
+//JSTL
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+//JSTL - LIST SIZE 구하기
+${fn:length(listName)}
