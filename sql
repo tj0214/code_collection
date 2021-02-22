@@ -18,6 +18,14 @@ VALUES
   ('A','B','C')
 ;
 
+//수정
+UPDATE
+  TEST_TABLE
+SET
+  ONE = 'D'
+WHERE
+  ONE = 'A'
+
 //삭제
 DELETE FROM
   TEST_TABLE
