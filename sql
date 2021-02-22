@@ -1,0 +1,27 @@
+//조회
+SELECT
+  *
+FROM
+  TEST_TABLE
+;
+
+//삽입
+INSERT INTO
+  TEST_TABLE
+VALUES
+  ('A','B','C')
+;
+
+INSERT INTO
+  TEST_TABLE(ONE, TWO, THREE)
+VALUES
+  ('A','B','C')
+;
+
+//삭제
+DELETE FROM
+  TEST_TABLE
+WHERE 1=1
+  AND ONE = 'A'
+;
+
