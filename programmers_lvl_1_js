@@ -1,159 +1,88 @@
 --------------------------------------------------------------------------------
-두 개 뽑아서 더하기
 
-function solution(numbers) {
-    var answer = [];
-    for(var i=0; i<numbers.length; i++){
-        for(var j=i+1; j<numbers.length; j++){
-            answer.push(numbers[i]+numbers[j]);
-        }
-    }
-    answer = [...new Set(answer)];
-    answer.sort((a, b) => a - b);
-    return answer;
-}
---------------------------------------------------------------------------------
-크레인 인형뽑기 게임
 
-function solution(board, moves) {
-    var cnt = 0;
-    var temp = [];
-    for(var i = 0; i<moves.length; i++){
-        for(var j = 0; j<board.length; j++){
-            if(board[j][moves[i]-1]){
-                if(board[j][moves[i]-1] == temp[temp.length-1]){
-                    temp.pop();
-                    cnt+=2;
-                }else{
-                    temp.push(board[j][moves[i]-1]);
-                }
-                board[j][moves[i]-1] = 0;
-                break;
-            }
-        }
-    }
-    return cnt;
-}
---------------------------------------------------------------------------------
-완주하지 못한 선수
 
-function solution(p, c) {
-    p.sort();
-    c.sort();
-    for(var i in p){
-        if(p[i]!=c[i]){
-            return p[i];
-        }
-    }
-    return p[i];
-}
 --------------------------------------------------------------------------------
-모의고사
 
-function solution(answers) {
-    var answer = []
-    var pattern = [[1, 2, 3, 4, 5],[2, 1, 2, 3, 2, 4, 2, 5],[3, 3, 1, 1, 2, 2, 4, 4, 5, 5]]
-    var correct = [0, 0, 0]
-    for(var i in pattern){correct[i] = answers.filter((a,j)=> a === pattern[i][j%pattern[i].length]).length}
-    var max = Math.max(correct[0],correct[1],correct[2])
-    for(var i in correct){if (correct[i] === max) {answer.push(parseInt(i)+1)}}
-    return answer
-}
---------------------------------------------------------------------------------
-K번째수
 
-function solution(array, commands) {
-    return commands.map(a=>{
-        return array.slice(a[0]-1,a[1])
-                    .sort((b,c)=>b-c)
-                    [a[2]-1]
-    })
-}
---------------------------------------------------------------------------------
-체육복
 
-function solution(n, lost, reserve) {
-    return n - lost.filter(l=>{
-                        const a = reserve.find(r=>l==r)
-                        if(a!=l) return true
-                        reserve = reserve.filter(r=>r!=a)
-                    })
-                    .filter(l=>{
-                        const a = reserve.find(r=>Math.abs(r-l)==1)
-                        if(!a) return true
-                        reserve = reserve.filter(r=>r!==a)
-                    })
-                    .length
-}
 --------------------------------------------------------------------------------
-2016년
-
-function solution(a, b) {
-    return new Date(2016,a-1,b).toString().slice(0,3).toUpperCase();
-}
---------------------------------------------------------------------------------
-3진법 뒤집기
+신규 아이디 추천
 
 function solution(n) {
-    return parseInt([...n.toString(3)].reverse().join(''), 3)
+   n = n.toLowerCase()
+        .replace(/[^\w-.]/g,'')
+        .replace(/\.+/g,'.')
+        .replace(/^\.|\.$/,'')
+        .replace(/^$/,'a')
+        .slice(0, 15).replace(/\.$/, '')
+    return n.padEnd(3,n.substr(-1))
 }
 --------------------------------------------------------------------------------
-가운데 글자 가져오기
+자연수 뒤집어 배열로 만들기
+
+function solution(n) {
+    return [...(n+'')].map(a=>a*1).reverse()
+}
+--------------------------------------------------------------------------------
+자릿수 더하기
+
+function solution(n){
+    return [...(n+"")].reduce((a,b)=>a+b*1,0)
+}
+--------------------------------------------------------------------------------
+이상한 문자 만들기
 
 function solution(s) {
-    return s.substring(Math.ceil(s.length/2)-1,Math.floor(s.length/2)+1);
+    return s.split(' ').map((a,b)=>[...a].map((c,d)=>d%2==0?c.toUpperCase():c.toLowerCase()).join('')).join(' ')
 }
 --------------------------------------------------------------------------------
-같은 숫자는 싫어
+약수의 합
 
-function solution(arr){
-    return arr.filter((a,b)=>a!=arr[b+1]);
+function solution(n) {
+    return n==0?0:Array(n).fill(1)
+                          .map((x,y)=>x+y)
+                          .filter(a=>n%a!=0?0:a)
+                          .reduce((c,d)=>c+d)
 }
 --------------------------------------------------------------------------------
-나누어 떨어지는 숫자 배열
+시저 암호
 
-function solution(arr, divisor) {
-    return arr.filter(a=>a%divisor==false).length?arr.filter(a=>a%divisor==false).sort((a,b)=>a-b):[-1];
+function solution(s, n) {
+    return [...s].map(a=>{
+            if(a ==' '){
+                return a
+            }else if(a.charCodeAt(0)>64 && a.charCodeAt(0)<91){
+                return String.fromCharCode((a.charCodeAt(0)-65+n)%26+65)
+            }else if(a.charCodeAt(0)>96 && a.charCodeAt(0)<123){
+                return String.fromCharCode((a.charCodeAt(0)-97+n)%26+97)
+            }
+        }).join('')
 }
 --------------------------------------------------------------------------------
-두 정수 사이의 합
+내적
 
 function solution(a, b) {
-    return (a+b)/2*(Math.abs(a-b)+1);
+//    return a.map((c,d)=>c*b[d]).reduce((e,f)=>e+f)
+    return a.reduce((c,d,i)=>c+d*b[i],0)
 }
 --------------------------------------------------------------------------------
-문자열 내 마음대로 정렬하기
-
-function solution(strings, n) {
-    return strings.map(a=>[...a][n]+a)
-                  .sort()
-                  .map(a=>a.substring(1))
-}
---------------------------------------------------------------------------------
-문자열 내 p와 y의 개수
-
-function solution(s){
-    return !Math.abs([...s.toUpperCase()].map(a=>{return a=='P'?1:a=='Y'?-1:0}).reduce((a,b)=>a+b))
-}
---------------------------------------------------------------------------------
-문자열 내림차순으로 배치하기
+문자열을 정수로 바꾸기
 
 function solution(s) {
-    return [...s].sort().reverse().join('')
+    return ~~s
 }
 --------------------------------------------------------------------------------
-문자열 다루기 기본
+수박수박수박수박수박수?
 
-function solution(s) {
-//    return !(s.length==4||s.length==6)?false:s.length==parseInt(s).toString().length
-//    return s.length==4||s.length==6?s==parseInt(s):false
-    return /^\d{6}$|^\d{4}$/.test(s);
-}
---------------------------------------------------------------------------------
-서울에서 김서방 찾기
-
-function solution(seoul) {
-    return '김서방은 '+seoul.indexOf('Kim')+'에 있다'
+function solution(n) {
+    return [...Array(n).keys()].map(a=>{
+                                    if(a%2==0){
+                                        return '수'
+                                    }else{
+                                        return '박'
+                                    }
+                                }).join('')
 }
 --------------------------------------------------------------------------------
 소수 찾기
@@ -200,79 +129,162 @@ function solution(n) {
     // }).length
 }
 --------------------------------------------------------------------------------
-수박수박수박수박수박수?
+서울에서 김서방 찾기
 
-function solution(n) {
-    return [...Array(n).keys()].map(a=>{
-                                    if(a%2==0){
-                                        return '수'
-                                    }else{
-                                        return '박'
-                                    }
-                                }).join('')
+function solution(seoul) {
+    return '김서방은 '+seoul.indexOf('Kim')+'에 있다'
 }
 --------------------------------------------------------------------------------
-문자열을 정수로 바꾸기
+문자열 다루기 기본
 
 function solution(s) {
-    return ~~s
+//    return !(s.length==4||s.length==6)?false:s.length==parseInt(s).toString().length
+//    return s.length==4||s.length==6?s==parseInt(s):false
+    return /^\d{6}$|^\d{4}$/.test(s);
 }
 --------------------------------------------------------------------------------
-내적
+문자열 내림차순으로 배치하기
+
+function solution(s) {
+    return [...s].sort().reverse().join('')
+}
+--------------------------------------------------------------------------------
+문자열 내 p와 y의 개수
+
+function solution(s){
+    return !Math.abs([...s.toUpperCase()].map(a=>{return a=='P'?1:a=='Y'?-1:0}).reduce((a,b)=>a+b))
+}
+--------------------------------------------------------------------------------
+문자열 내 마음대로 정렬하기
+
+function solution(strings, n) {
+    return strings.map(a=>[...a][n]+a)
+                  .sort()
+                  .map(a=>a.substring(1))
+}
+--------------------------------------------------------------------------------
+두 정수 사이의 합
 
 function solution(a, b) {
-//    return a.map((c,d)=>c*b[d]).reduce((e,f)=>e+f)
-    return a.reduce((c,d,i)=>c+d*b[i],0)
+    return (a+b)/2*(Math.abs(a-b)+1);
 }
 --------------------------------------------------------------------------------
-시저 암호
+나누어 떨어지는 숫자 배열
 
-function solution(s, n) {
-    return [...s].map(a=>{
-            if(a ==' '){
-                return a
-            }else if(a.charCodeAt(0)>64 && a.charCodeAt(0)<91){
-                return String.fromCharCode((a.charCodeAt(0)-65+n)%26+65)
-            }else if(a.charCodeAt(0)>96 && a.charCodeAt(0)<123){
-                return String.fromCharCode((a.charCodeAt(0)-97+n)%26+97)
-            }
-        }).join('')
+function solution(arr, divisor) {
+    return arr.filter(a=>a%divisor==false).length?arr.filter(a=>a%divisor==false).sort((a,b)=>a-b):[-1];
 }
 --------------------------------------------------------------------------------
-약수의 합
+같은 숫자는 싫어
 
-function solution(n) {
-    return n==0?0:Array(n).fill(1)
-                          .map((x,y)=>x+y)
-                          .filter(a=>n%a!=0?0:a)
-                          .reduce((c,d)=>c+d)
+function solution(arr){
+    return arr.filter((a,b)=>a!=arr[b+1]);
 }
 --------------------------------------------------------------------------------
-이상한 문자 만들기
+가운데 글자 가져오기
 
 function solution(s) {
-    return s.split(' ').map((a,b)=>[...a].map((c,d)=>d%2==0?c.toUpperCase():c.toLowerCase()).join('')).join(' ')
+    return s.substring(Math.ceil(s.length/2)-1,Math.floor(s.length/2)+1);
 }
 --------------------------------------------------------------------------------
-자릿수 더하기
-
-function solution(n){
-    return [...(n+"")].reduce((a,b)=>a+b*1,0)
-}
---------------------------------------------------------------------------------
-자연수 뒤집어 배열로 만들기
+3진법 뒤집기
 
 function solution(n) {
-    return [...(n+'')].map(a=>a*1).reverse()
+    return parseInt([...n.toString(3)].reverse().join(''), 3)
 }
 --------------------------------------------------------------------------------
+2016년
 
-
-
+function solution(a, b) {
+    return new Date(2016,a-1,b).toString().slice(0,3).toUpperCase();
+}
 --------------------------------------------------------------------------------
+체육복
 
+function solution(n, lost, reserve) {
+    return n - lost.filter(l=>{
+                        const a = reserve.find(r=>l==r)
+                        if(a!=l) return true
+                        reserve = reserve.filter(r=>r!=a)
+                    })
+                    .filter(l=>{
+                        const a = reserve.find(r=>Math.abs(r-l)==1)
+                        if(!a) return true
+                        reserve = reserve.filter(r=>r!==a)
+                    })
+                    .length
+}
+--------------------------------------------------------------------------------
+K번째수
 
+function solution(array, commands) {
+    return commands.map(a=>{
+        return array.slice(a[0]-1,a[1])
+                    .sort((b,c)=>b-c)
+                    [a[2]-1]
+    })
+}
+--------------------------------------------------------------------------------
+모의고사
 
+function solution(answers) {
+    var answer = []
+    var pattern = [[1, 2, 3, 4, 5],[2, 1, 2, 3, 2, 4, 2, 5],[3, 3, 1, 1, 2, 2, 4, 4, 5, 5]]
+    var correct = [0, 0, 0]
+    for(var i in pattern){correct[i] = answers.filter((a,j)=> a === pattern[i][j%pattern[i].length]).length}
+    var max = Math.max(correct[0],correct[1],correct[2])
+    for(var i in correct){if (correct[i] === max) {answer.push(parseInt(i)+1)}}
+    return answer
+}
+--------------------------------------------------------------------------------
+완주하지 못한 선수
+
+function solution(p, c) {
+    p.sort();
+    c.sort();
+    for(var i in p){
+        if(p[i]!=c[i]){
+            return p[i];
+        }
+    }
+    return p[i];
+}
+--------------------------------------------------------------------------------
+크레인 인형뽑기 게임
+
+function solution(board, moves) {
+    var cnt = 0;
+    var temp = [];
+    for(var i = 0; i<moves.length; i++){
+        for(var j = 0; j<board.length; j++){
+            if(board[j][moves[i]-1]){
+                if(board[j][moves[i]-1] == temp[temp.length-1]){
+                    temp.pop();
+                    cnt+=2;
+                }else{
+                    temp.push(board[j][moves[i]-1]);
+                }
+                board[j][moves[i]-1] = 0;
+                break;
+            }
+        }
+    }
+    return cnt;
+}
+--------------------------------------------------------------------------------
+두 개 뽑아서 더하기
+
+function solution(numbers) {
+    var answer = [];
+    for(var i=0; i<numbers.length; i++){
+        for(var j=i+1; j<numbers.length; j++){
+            answer.push(numbers[i]+numbers[j]);
+        }
+    }
+    answer = [...new Set(answer)];
+    answer.sort((a, b) => a - b);
+    return answer;
+}
 --------------------------------------------------------------------------------
 
 
