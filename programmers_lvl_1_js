@@ -48,8 +48,232 @@ function solution(p, c) {
     return p[i];
 }
 --------------------------------------------------------------------------------
+모의고사
+
+function solution(answers) {
+    var answer = []
+    var pattern = [[1, 2, 3, 4, 5],[2, 1, 2, 3, 2, 4, 2, 5],[3, 3, 1, 1, 2, 2, 4, 4, 5, 5]]
+    var correct = [0, 0, 0]
+    for(var i in pattern){correct[i] = answers.filter((a,j)=> a === pattern[i][j%pattern[i].length]).length}
+    var max = Math.max(correct[0],correct[1],correct[2])
+    for(var i in correct){if (correct[i] === max) {answer.push(parseInt(i)+1)}}
+    return answer
+}
+--------------------------------------------------------------------------------
+K번째수
+
+function solution(array, commands) {
+    return commands.map(a=>{
+        return array.slice(a[0]-1,a[1])
+                    .sort((b,c)=>b-c)
+                    [a[2]-1]
+    })
+}
+--------------------------------------------------------------------------------
+체육복
+
+function solution(n, lost, reserve) {
+    return n - lost.filter(l=>{
+                        const a = reserve.find(r=>l==r)
+                        if(a!=l) return true
+                        reserve = reserve.filter(r=>r!=a)
+                    })
+                    .filter(l=>{
+                        const a = reserve.find(r=>Math.abs(r-l)==1)
+                        if(!a) return true
+                        reserve = reserve.filter(r=>r!==a)
+                    })
+                    .length
+}
+--------------------------------------------------------------------------------
+2016년
+
+function solution(a, b) {
+    return new Date(2016,a-1,b).toString().slice(0,3).toUpperCase();
+}
+--------------------------------------------------------------------------------
+3진법 뒤집기
+
+function solution(n) {
+    return parseInt([...n.toString(3)].reverse().join(''), 3)
+}
+--------------------------------------------------------------------------------
+가운데 글자 가져오기
+
+function solution(s) {
+    return s.substring(Math.ceil(s.length/2)-1,Math.floor(s.length/2)+1);
+}
+--------------------------------------------------------------------------------
+같은 숫자는 싫어
+
+function solution(arr){
+    return arr.filter((a,b)=>a!=arr[b+1]);
+}
+--------------------------------------------------------------------------------
+나누어 떨어지는 숫자 배열
+
+function solution(arr, divisor) {
+    return arr.filter(a=>a%divisor==false).length?arr.filter(a=>a%divisor==false).sort((a,b)=>a-b):[-1];
+}
+--------------------------------------------------------------------------------
+두 정수 사이의 합
+
+function solution(a, b) {
+    return (a+b)/2*(Math.abs(a-b)+1);
+}
+--------------------------------------------------------------------------------
+문자열 내 마음대로 정렬하기
+
+function solution(strings, n) {
+    return strings.map(a=>[...a][n]+a)
+                  .sort()
+                  .map(a=>a.substring(1))
+}
+--------------------------------------------------------------------------------
+문자열 내 p와 y의 개수
+
+function solution(s){
+    return !Math.abs([...s.toUpperCase()].map(a=>{return a=='P'?1:a=='Y'?-1:0}).reduce((a,b)=>a+b))
+}
+--------------------------------------------------------------------------------
+문자열 내림차순으로 배치하기
+
+function solution(s) {
+    return [...s].sort().reverse().join('')
+}
+--------------------------------------------------------------------------------
+문자열 다루기 기본
+
+function solution(s) {
+//    return !(s.length==4||s.length==6)?false:s.length==parseInt(s).toString().length
+//    return s.length==4||s.length==6?s==parseInt(s):false
+    return /^\d{6}$|^\d{4}$/.test(s);
+}
+--------------------------------------------------------------------------------
+서울에서 김서방 찾기
+
+function solution(seoul) {
+    return '김서방은 '+seoul.indexOf('Kim')+'에 있다'
+}
+--------------------------------------------------------------------------------
+소수 찾기
+
+function solution(n) {
+    var answer = [...Array(n-1).keys()].map(a=>a+2)
+    
+    for(var i=2; i<answer.length+2; i++){
+        if(answer[i-2]!=0){
+            for(var j=2*i; j<answer.length+2; j+=i){
+                answer[j-2] = 0
+            }
+        }
+    }
+    
+    return answer.filter(a=>a).length
+
+    // return [...Array(n-1).keys()].map(a=>a+2).filter(a=>{
+    //             for(var i=2;i*i<=a;i++){
+    //                 if(a>i){
+    //                     if(a%i==0) return false
+    //                 }
+    //             }
+    //             return true
+    //         }).length
+    
+    // var answer=n-1
+    // for(var i=2;i<n+1;i++){
+    //     for(var j=2;j*j<i+1;j++){
+    //         if(i>j){
+    //             if(i%j==0){
+    //                 answer--
+    //                 break
+    //             }
+    //         }
+    //     }
+    // }
+    // return answer
+    
+    // return [...Array(n-1).keys()].map(a=>a+2).filter(a=>{
+    //     return ![...Array(Math.floor(a/2)).keys()].map(a=>a+2).find(c=>{
+    //         if(a>c) return a%c==0
+    //     })
+    // }).length
+}
+--------------------------------------------------------------------------------
+수박수박수박수박수박수?
+
+function solution(n) {
+    return [...Array(n).keys()].map(a=>{
+                                    if(a%2==0){
+                                        return '수'
+                                    }else{
+                                        return '박'
+                                    }
+                                }).join('')
+}
+--------------------------------------------------------------------------------
+문자열을 정수로 바꾸기
+
+function solution(s) {
+    return ~~s
+}
+--------------------------------------------------------------------------------
+내적
+
+function solution(a, b) {
+//    return a.map((c,d)=>c*b[d]).reduce((e,f)=>e+f)
+    return a.reduce((c,d,i)=>c+d*b[i],0)
+}
+--------------------------------------------------------------------------------
+시저 암호
+
+function solution(s, n) {
+    return [...s].map(a=>{
+            if(a ==' '){
+                return a
+            }else if(a.charCodeAt(0)>64 && a.charCodeAt(0)<91){
+                return String.fromCharCode((a.charCodeAt(0)-65+n)%26+65)
+            }else if(a.charCodeAt(0)>96 && a.charCodeAt(0)<123){
+                return String.fromCharCode((a.charCodeAt(0)-97+n)%26+97)
+            }
+        }).join('')
+}
+--------------------------------------------------------------------------------
+약수의 합
+
+function solution(n) {
+    return n==0?0:Array(n).fill(1)
+                          .map((x,y)=>x+y)
+                          .filter(a=>n%a!=0?0:a)
+                          .reduce((c,d)=>c+d)
+}
+--------------------------------------------------------------------------------
+이상한 문자 만들기
+
+function solution(s) {
+    return s.split(' ').map((a,b)=>[...a].map((c,d)=>d%2==0?c.toUpperCase():c.toLowerCase()).join('')).join(' ')
+}
+--------------------------------------------------------------------------------
+자릿수 더하기
+
+function solution(n){
+    return [...(n+"")].reduce((a,b)=>a+b*1,0)
+}
+--------------------------------------------------------------------------------
+자연수 뒤집어 배열로 만들기
+
+function solution(n) {
+    return [...(n+'')].map(a=>a*1).reverse()
+}
+--------------------------------------------------------------------------------
 
 
+
+--------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------
 
 
 
