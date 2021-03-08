@@ -1,0 +1,11 @@
+//클래스
+.class
+
+//아이디
+#id
+
+//네임
+$("input[name=이름]")
+
+//margin: up right down left;
+margin: 1px 1px 1px 1px;
