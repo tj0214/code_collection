@@ -7,6 +7,34 @@
 
 
 --------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------
+[카카오 인턴] 키패드 누르기
+
+function solution(n, hand) {
+    let left=10, right=12, answer='', left_d, right_d, used
+    hand = hand[0].toUpperCase()
+    for(var i=0;i<n.length;i++){
+        if(n[i]==0) n[i]=11
+        if(n[i]%3==2){
+            left_d = Math.abs(Math.ceil(left/3)-Math.ceil(n[i]/3)) + (left%3==n[i]%3?0:1)
+            right_d = Math.abs(Math.ceil(right/3)-Math.ceil(n[i]/3)) + (right%3==n[i]%3?0:1)
+            used = (left_d==right_d ? hand : left_d>right_d ? 'R' : 'L')
+            answer += used
+            used=='L' ? left=n[i] : right=n[i]
+        }else if(n[i]%3==1){
+            answer += 'L'
+            left = n[i]
+        }else if(n[i]%3==0){
+            answer += 'R'
+            right = n[i]
+        }
+    }
+    return answer
+}
+--------------------------------------------------------------------------------
 짝수와 홀수
 
 function solution(num) {
