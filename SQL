@@ -25,6 +25,7 @@ SET
   ONE = 'D'
 WHERE
   ONE = 'A'
+;
 
 //삭제
 DELETE FROM
@@ -33,3 +34,8 @@ WHERE 1=1
   AND ONE = 'A'
 ;
 
+//행 값 합치기
+SELECT
+    LISTAGG(A, ', ') WITHIN GROUP(ORDER BY A)
+FROM 
+    TEST_TABLE
