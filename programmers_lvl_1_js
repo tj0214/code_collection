@@ -11,9 +11,26 @@
 
 
 --------------------------------------------------------------------------------
+소수 만들기
 
-
-
+function solution(nums) {
+    var answer = 0
+    for(let i = 0; i < nums.length-2; i++){
+        for(let j = i+1; j < nums.length-1; j++){
+            for(let k = j+1; k < nums.length; k++){
+                var n = nums[i] + nums[j] + nums[k], temp = 0
+                for(var z = 2; z * z <= n; z++){
+                    if(n % z == 0){
+                        temp=1
+                        break
+                    }
+                }
+                if(temp == 0) answer++
+            }
+        }
+    }
+    return answer
+}
 --------------------------------------------------------------------------------
 최대공약수와 최소공배수
 
