@@ -23,7 +23,7 @@ rm 파일명
 rm -r 디렉토리명
 
 //검색
-grep -r -i "color" | cut -d ":" -f2 | sort | uniq -c
+grep -r -i "color\|size" | cut -d ":" -f2 | sort | uniq -c
 
 //출력 전체 무시
 >/dev/null 2>&1
@@ -33,3 +33,14 @@ grep -r -i "color" | cut -d ":" -f2 | sort | uniq -c
 
 //표준 출력만 무시
 1>/dev/null
+
+//alias
+alias ll='ls -alF'
+alias f='find . -iname'
+alias g='grep -r -i'
+alias gcl='gcloud auth list'
+alias q='bq query --nouse_legacy_sql'
+alias time='export TMOUT=0'
+alias test='bash /home/test/shell/test.sh'
+
+
