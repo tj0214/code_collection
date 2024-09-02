@@ -24,6 +24,10 @@ rm -r 디렉토리명
 
 //검색
 grep -r -i "color\|size" | cut -d ":" -f2 | sort | uniq -c
+-r 하위 디렉토리
+-i 대소문자 구분 x
+-e 정규식
+-f 정규식 x
 
 //출력 전체 무시
 >/dev/null 2>&1
