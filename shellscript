@@ -44,3 +44,7 @@ echo "end - get log"
 echo "
 조회 : ${HOME}/${DATE}"
 ls -alF ${HOME}/${DATE}
+
+echo "
+---end - test.sh---
+"
