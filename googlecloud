@@ -1,0 +1,15 @@
+//옵션 변경
+gcloud dataflow jobs update-options --region asia-northeast3 --max-num-workers=10 2024-06-25_18_48_48-0000000000000000000
+
+//강제 캔슬
+gcloud dataflow jobs cancel 2024-07-03_01_17_34-0000000000000000000 --force --region asia-northeast3
+
+//동기화
+rm -rf $HOME/test/  //디렉토리 삭제
+mkdir -p $HOME/test/  //디렉토리 생성
+gsutil -m rsync -r gs://bucket/test/ $HOME/test/
+gsutil -m rsync -r -x .*.fin gs://bucket/test/ $HOME/test/
+
+
+
+
