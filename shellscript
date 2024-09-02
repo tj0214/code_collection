@@ -1,0 +1,46 @@
+// test.sh
+
+#!/bin/sh
+
+echo "
+---start - test.sh---
+"
+
+#현재날짜
+DATE=$(date +"%G%m%d")
+echo "date : ${DATE}"
+
+#시간
+TIME=$(date +"%H%M")
+echo "time : ${TIME}"
+
+TEST = ""
+
+if [ "$1" == "1" ]
+then
+    TEST="wow"
+elif [ "$1" == "2" ]
+then
+    TEST="yes"
+fi
+
+echo "TEST : ${TEST}"
+
+#디렉토리 생성
+mkdir -p ${HOME}/${DATE}
+
+#최신 로그파일
+echo "start - get latest date"
+LATEST1=$(gsutil ls gs://bucket/test/logs/${DATE}/ | cut -d "/" -f7 | sort | tail -1)
+LATEST_LOG1=$(gsutil ls gs://bucket/test/logs/${DATE}/${LATEST1}/ | tail -1 | rev | cut -d '/' -f1 | rev | cut -d '.' -f1)
+echo "${TEST} : ${LATEST1} , ${LATEST_LOG1}"
+echo "end - get latest date"
+
+#로그 데이터 가져오기
+echo "start - get log"
+gsutil cp gs://bucket/test/logs/${DATE}/${LATEST1}/${LATEST_LOG1}.log ${HOME}/${DATE}/${TIME}.log
+echo "end - get log"
+
+echo "
+조회 : ${HOME}/${DATE}"
+ls -alF ${HOME}/${DATE}
