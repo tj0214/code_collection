@@ -1,0 +1,2 @@
+dbt test -m test1 --project-dir=bucket/test
+dbt run -m test1 --project-dir=bucket/test
