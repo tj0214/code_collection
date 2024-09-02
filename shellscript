@@ -1,4 +1,4 @@
-// test.sh
+//test.sh
 
 #!/bin/sh
 
@@ -48,3 +48,14 @@ ls -alF ${HOME}/${DATE}
 echo "
 ---end - test.sh---
 "
+
+
+
+//pod_access.sh
+
+#!/bin/sh
+
+POD_SERVER=$(kubectl get pods | grep dbt | cut -d " " -f1)
+echo "pod server : ${POD_SERVER}"
+kubectl exec -it ${POD_SERVER} -- bash
+
