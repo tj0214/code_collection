@@ -1,0 +1,34 @@
+//nodejs 설치
+https://nodejs.org/ko/download/
+
+//ngrok express nodemon 설치
+npm i g -s ngrok express nodemon
+
+//server.js 파일 ------------------------------------------------------
+const express = require('express');
+const app = express();
+const ngrok = require('ngrok');
+
+
+app.get('/', (req, res) => {
+    res.send('Hello World I am running locally');
+});
+
+const server = app.listen(3000, () => {
+    console.log('Running at 3000');
+});
+
+ngrok.connect({
+    proto : 'http',
+    addr : process.env.PORT,
+}, (err, url) => {
+    if (err) {
+        console.error('Error while connecting Ngrok',err);
+        return new Error('Ngrok Failed');
+    }
+});
+
+//서버실행------------------------------------------------------
+ngrok authtoken 토큰코드
+ngrok http 3000
+node server.js
